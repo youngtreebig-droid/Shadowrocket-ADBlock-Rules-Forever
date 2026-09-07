@@ -18,13 +18,13 @@ YouTube = select,PROXY,include-all-proxies=true,policy-select-name=PROXY   # inc
 ## 既要 PROXY 默认、又要能选具体节点：用两级分组
 
 ```conf
-手动选择 = select,policy-regex-filter=.*
-YouTube = select,PROXY,手动选择,日本节点,美国节点,policy-select-name=PROXY
+👆手动选择 = select,policy-regex-filter=.*
+YouTube = select,PROXY,👆手动选择,日本节点,美国节点,policy-select-name=PROXY
 ```
 
 - 服务分组不带正则筛选，显式列出策略；`policy-select-name` 指定的默认项同时放在列表第一位，避免依赖单一机制。
-- 全部服务共用一个 `手动选择` 分组，不要给每个服务生成专属的节点子分组——本仓库明确要求保持精简。
-  代价是同时选中「手动选择」的服务会共享同一个节点；需要区分时才额外加分组。
+- 全部服务共用一个 `👆手动选择` 分组，不要给每个服务生成专属的节点子分组——本仓库明确要求保持精简。
+  代价是同时选中「👆手动选择」的服务会共享同一个节点；需要区分时才额外加分组。
 
 ## ⚠️ 真正的生成源是 release.yml，不是 lazy_group.conf
 
