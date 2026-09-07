@@ -301,6 +301,7 @@ INTP | Jack of all trades | I use Arch BTW
 - 规则覆盖范围广
 - 包含广告过滤
 - MissAV 网站单独分流
+- Kiro IDE 和 CLI 单独走代理
 - 国内外常用app单独分流
 - 添加自动切换延迟最低节点类型
 - 通过「代理分组」灵活调整流媒体分流策略

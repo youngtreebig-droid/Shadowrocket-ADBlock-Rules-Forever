@@ -61,6 +61,7 @@ jobs:
           missav_group='MissAV = select,PROXY,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY'
           missav_rule_set='RULE-SET,https://raw.githubusercontent.com/youngtreebig-droid/Shadowrocket-Rules/refs/heads/main/MissAV.list,MissAV'
           missav_keyword_rule='DOMAIN-KEYWORD,missav,MissAV'
+          kiro_rule_marker='DOMAIN-SUFFIX,kiro.dev,PROXY'
           if ! grep -Fqx "$missav_group" lazy_group.conf; then
             awk -v line="$missav_group" '{ print } /^\[Proxy Group\]$/ { print line }' lazy_group.conf > lazy_group.conf.tmp
             mv lazy_group.conf.tmp lazy_group.conf
@@ -75,6 +76,25 @@ jobs:
           fi
           if ! grep -Fqx "$missav_keyword_rule" lazy_group.conf; then
             awk -v line="$missav_keyword_rule" '{ print } /^\[Rule\]$/ { print line }' lazy_group.conf > lazy_group.conf.tmp
+            mv lazy_group.conf.tmp lazy_group.conf
+          fi
+          if ! grep -Fqx "$kiro_rule_marker" lazy_group.conf; then
+            awk '
+              { print }
+              /^# AI$/ {
+                print ""
+                print "# Kiro IDE / CLI（参考 youngtreebig-droid/Shadowrocket-Rules）"
+                print "DOMAIN-SUFFIX,kiro.dev,PROXY"
+                print "DOMAIN-SUFFIX,kiro.aws.dev,PROXY"
+                print "DOMAIN-SUFFIX,shortbread.aws.dev,PROXY"
+                print "DOMAIN-SUFFIX,q.eu-central-1.amazonaws.com,PROXY"
+                print "DOMAIN-SUFFIX,q.us-east-1.amazonaws.com,PROXY"
+                print "PROCESS-NAME,Kiro Helper (Plugin),PROXY"
+                print "PROCESS-NAME,Kiro Helper,PROXY"
+                print "PROCESS-NAME,kiro-cli-chat,PROXY"
+                print ""
+              }
+            ' lazy_group.conf > lazy_group.conf.tmp
             mv lazy_group.conf.tmp lazy_group.conf
           fi
         
