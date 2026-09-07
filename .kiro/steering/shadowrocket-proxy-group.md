@@ -26,6 +26,21 @@ YouTube = select,PROXY,手动选择,日本节点,美国节点,policy-select-name
 - 全部服务共用一个 `手动选择` 分组，不要给每个服务生成专属的节点子分组——本仓库明确要求保持精简。
   代价是同时选中「手动选择」的服务会共享同一个节点；需要区分时才额外加分组。
 
+## ⚠️ 真正的生成源是 release.yml，不是 lazy_group.conf
+
+`.github/workflows/release.yml` 的 `Update lazy rules` 步骤会：删除 `lazy_group.conf` →
+从 `LOWERTOP/Shadowrocket` 重新下载 → 用内嵌 awk 的硬编码字符串**整体覆写全部服务分组**。
+
+因此**只改 `lazy_group.conf` 不起作用**，分组的任何改动必须同步改 release.yml 里 awk 的 `groups[...]` 映射，
+否则会被下一次构建静默还原。改完用下面的方式验证两边一致：
+
+```bash
+curl -so /tmp/low.conf https://raw.githubusercontent.com/LOWERTOP/Shadowrocket/main/lazy_group.conf
+# 从 release.yml 抽出 awk 程序后执行，再对比 [Proxy Group] 段与 lazy_group.conf 是否一致
+```
+
+（注意 `/tmp` 在多次命令调用之间不保留，下载与验证要放在同一次执行里。）
+
 ## 其他
 
 - 策略名大小写不敏感：`[Rule]` 里写 `YOUTUBE` 能匹配 `[Proxy Group]` 中定义的 `YouTube`（上游原版即如此，不要为此改名）。
