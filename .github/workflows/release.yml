@@ -58,14 +58,49 @@ jobs:
           curl -O https://raw.githubusercontent.com/LOWERTOP/Shadowrocket/main/lazy.conf
           curl -O https://raw.githubusercontent.com/LOWERTOP/Shadowrocket/main/lazy_group.conf
           ad_rule_set='RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Advertising/Advertising.list,REJECT'
-          missav_group='MissAV = select,PROXY,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY'
           missav_rule_set='RULE-SET,https://raw.githubusercontent.com/youngtreebig-droid/Shadowrocket-Rules/refs/heads/main/MissAV.list,MissAV'
           missav_keyword_rule='DOMAIN-KEYWORD,missav,MissAV'
           kiro_rule_marker='DOMAIN-SUFFIX,kiro.dev,PROXY'
-          if ! grep -Fqx "$missav_group" lazy_group.conf; then
-            awk -v line="$missav_group" '{ print } /^\[Proxy Group\]$/ { print line }' lazy_group.conf > lazy_group.conf.tmp
-            mv lazy_group.conf.tmp lazy_group.conf
-          fi
+          awk '
+            BEGIN {
+              groups["AI"] = "AI = select,PROXY,use=true,policy-regex-filter=.*,policy-select-name=PROXY"
+              groups["MissAV"] = "MissAV = select,PROXY,use=true,policy-regex-filter=.*,policy-select-name=PROXY"
+              groups["YouTube"] = "YouTube = select,PROXY,use=true,policy-regex-filter=.*,policy-select-name=PROXY"
+              groups["Netflix"] = "Netflix = select,PROXY,use=true,policy-regex-filter=.*,policy-select-name=PROXY"
+              groups["Disney+"] = "Disney+ = select,PROXY,use=true,policy-regex-filter=.*,policy-select-name=PROXY"
+              groups["Max"] = "Max = select,PROXY,use=true,policy-regex-filter=.*,policy-select-name=PROXY"
+              groups["TikTok"] = "TikTok = select,PROXY,use=true,policy-regex-filter=.*,policy-select-name=PROXY"
+              groups["Spotify"] = "Spotify = select,DIRECT,PROXY,use=true,policy-regex-filter=.*,policy-select-name=PROXY"
+              groups["Telegram"] = "Telegram = select,PROXY,use=true,policy-regex-filter=.*,policy-select-name=PROXY"
+              groups["Twitter"] = "Twitter = select,PROXY,use=true,policy-regex-filter=.*,policy-select-name=PROXY"
+              groups["Facebook"] = "Facebook = select,PROXY,use=true,policy-regex-filter=.*,policy-select-name=PROXY"
+              groups["PayPal"] = "PayPal = select,DIRECT,PROXY,use=true,policy-regex-filter=.*,policy-select-name=PROXY"
+              groups["Amazon"] = "Amazon = select,DIRECT,PROXY,use=true,policy-regex-filter=.*,policy-select-name=PROXY"
+              groups["苹果服务"] = "苹果服务 = select,DIRECT,PROXY,use=true,policy-regex-filter=.*,policy-select-name=DIRECT"
+              groups["谷歌服务"] = "谷歌服务 = select,PROXY,use=true,policy-regex-filter=.*,policy-select-name=PROXY"
+              groups["微软服务"] = "微软服务 = select,DIRECT,PROXY,use=true,policy-regex-filter=.*,policy-select-name=PROXY"
+              groups["哔哩哔哩"] = "哔哩哔哩 = select,DIRECT,PROXY,use=true,policy-regex-filter=.*,policy-select-name=DIRECT"
+              groups["游戏平台"] = "游戏平台 = select,DIRECT,PROXY,use=true,policy-regex-filter=.*,policy-select-name=PROXY"
+            }
+            {
+              if ($0 == "[Proxy Group]") {
+                print
+                print groups["MissAV"]
+                next
+              }
+              separator = index($0, " = ")
+              name = separator > 0 ? substr($0, 1, separator - 1) : ""
+              if (name == "MissAV") {
+                next
+              }
+              if (name in groups) {
+                print groups[name]
+                next
+              }
+              print
+            }
+          ' lazy_group.conf > lazy_group.conf.tmp
+          mv lazy_group.conf.tmp lazy_group.conf
           if ! grep -Fqx "$ad_rule_set" lazy_group.conf; then
             awk -v line="$ad_rule_set" '{ print } /^\[Rule\]$/ { print line }' lazy_group.conf > lazy_group.conf.tmp
             mv lazy_group.conf.tmp lazy_group.conf
