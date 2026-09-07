@@ -57,6 +57,26 @@ jobs:
           rm lazy.conf lazy_group.conf
           curl -O https://raw.githubusercontent.com/LOWERTOP/Shadowrocket/main/lazy.conf
           curl -O https://raw.githubusercontent.com/LOWERTOP/Shadowrocket/main/lazy_group.conf
+          ad_rule_set='RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Advertising/Advertising.list,REJECT'
+          missav_group='MissAV = select,PROXY,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY'
+          missav_rule_set='RULE-SET,https://raw.githubusercontent.com/youngtreebig-droid/Shadowrocket-Rules/refs/heads/main/MissAV.list,MissAV'
+          missav_keyword_rule='DOMAIN-KEYWORD,missav,MissAV'
+          if ! grep -Fqx "$missav_group" lazy_group.conf; then
+            awk -v line="$missav_group" '{ print } /^\[Proxy Group\]$/ { print line }' lazy_group.conf > lazy_group.conf.tmp
+            mv lazy_group.conf.tmp lazy_group.conf
+          fi
+          if ! grep -Fqx "$ad_rule_set" lazy_group.conf; then
+            awk -v line="$ad_rule_set" '{ print } /^\[Rule\]$/ { print line }' lazy_group.conf > lazy_group.conf.tmp
+            mv lazy_group.conf.tmp lazy_group.conf
+          fi
+          if ! grep -Fqx "$missav_rule_set" lazy_group.conf; then
+            awk -v line="$missav_rule_set" '{ print } /^\[Rule\]$/ { print line }' lazy_group.conf > lazy_group.conf.tmp
+            mv lazy_group.conf.tmp lazy_group.conf
+          fi
+          if ! grep -Fqx "$missav_keyword_rule" lazy_group.conf; then
+            awk -v line="$missav_keyword_rule" '{ print } /^\[Rule\]$/ { print line }' lazy_group.conf > lazy_group.conf.tmp
+            mv lazy_group.conf.tmp lazy_group.conf
+          fi
         
       - name: Remove commits
         run: |
