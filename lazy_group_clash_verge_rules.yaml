@@ -1,0 +1,78 @@
+# ============================================================================
+# Clash Verge Rev 覆写 —「规则(rules)」覆写，由 lazy_group.conf 转换而来
+# ============================================================================
+# 适配版本：Clash Verge Rev >= 1.6（"覆写"里可单独添加"规则"类型的场景）。
+# 用法：订阅卡片 -> 编辑 -> 覆写 -> 新建 -> 类型选"规则(Rules)" -> 粘贴本文件。
+#
+# 依赖：
+#   - 本文件引用的策略名（PROXY / AI / MissAV / YouTube / ... / 游戏平台）由
+#     同批次的"策略组(groups)"覆写文件（lazy_group_clash_verge_groups.yaml）
+#     提供，请与其一起启用，否则规则会指向不存在的策略而报错。
+#   - 本文件引用的 RULE-SET 规则集名称（youtube、netflix、ad-blackmatrix7 等）
+#     由"配置覆写(merge)"覆写文件（lazy_group_clash_verge_merge.yaml）中的
+#     rule-providers 提供，请同样一起启用。
+#   - 三个文件建议同时对同一个订阅启用，缺一都可能导致规则或策略组不完整。
+# ============================================================================
+
+prepend:
+  # 广告过滤规则集，需放在分流规则之前以优先拦截广告请求
+  - "RULE-SET,ad-blackmatrix7,REJECT"
+  - "RULE-SET,ad-antiad,REJECT"
+  # MissAV 主站、视频/图片 CDN 和推荐接口
+  - "RULE-SET,missav,MissAV"
+  - "DOMAIN-KEYWORD,missav,MissAV"
+  # Kiro IDE / CLI
+  - "DOMAIN-SUFFIX,kiro.dev,PROXY"
+  - "DOMAIN-SUFFIX,kiro.aws.dev,PROXY"
+  - "DOMAIN-SUFFIX,shortbread.aws.dev,PROXY"
+  - "DOMAIN-SUFFIX,q.eu-central-1.amazonaws.com,PROXY"
+  - "DOMAIN-SUFFIX,q.us-east-1.amazonaws.com,PROXY"
+  - "PROCESS-NAME,Kiro Helper (Plugin),PROXY"
+  - "PROCESS-NAME,Kiro Helper,PROXY"
+  - "PROCESS-NAME,kiro-cli-chat,PROXY"
+  - "RULE-SET,ai,AI"
+  - "RULE-SET,youtube,YouTube"
+  - "RULE-SET,netflix,Netflix"
+  - "RULE-SET,disneyplus,Disney+"
+  - "DOMAIN-SUFFIX,litix.io,Max"
+  - "DOMAIN-SUFFIX,discomax.com,Max"
+  - "DOMAIN-SUFFIX,brightline.tv,Max"
+  - "RULE-SET,hbomax,Max"
+  - "RULE-SET,spotify,Spotify"
+  - "RULE-SET,telegram,Telegram"
+  - "RULE-SET,paypal,PayPal"
+  - "RULE-SET,twitter,Twitter"
+  - "RULE-SET,facebook,Facebook"
+  - "RULE-SET,amazon,Amazon"
+  - "RULE-SET,sony,游戏平台"
+  - "RULE-SET,nintendo,游戏平台"
+  - "RULE-SET,epic,游戏平台"
+  - "RULE-SET,steamcn,游戏平台"
+  - "RULE-SET,steam,游戏平台"
+  - "RULE-SET,game,游戏平台"
+  - "RULE-SET,github,PROXY"
+  - "RULE-SET,microsoft,微软服务"
+  - "RULE-SET,google,谷歌服务"
+  - "RULE-SET,apple,苹果服务"
+  - "RULE-SET,bilibili,哔哩哔哩"
+  - "RULE-SET,neteasemusic,DIRECT"
+  - "RULE-SET,baidu,DIRECT"
+  - "RULE-SET,douban,DIRECT"
+  - "RULE-SET,wechat,DIRECT"
+  - "RULE-SET,sina,DIRECT"
+  - "RULE-SET,zhihu,DIRECT"
+  - "RULE-SET,xiaohongshu,DIRECT"
+  - "RULE-SET,douyin,DIRECT"
+  - "RULE-SET,tiktok,TikTok"
+  - "RULE-SET,global,PROXY"
+  - "RULE-SET,china,DIRECT"
+  # 本地局域网地址规则集
+  - "RULE-SET,lan,DIRECT"
+  # CN 地区 IP 走直连（GEOIP 数据库判断）
+  - "GEOIP,CN,DIRECT"
+  # 兜底策略：其余所有请求走 PROXY
+  - "MATCH,PROXY"
+
+append: []
+
+delete: []

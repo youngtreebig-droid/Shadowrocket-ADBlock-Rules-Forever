@@ -1,0 +1,158 @@
+# ============================================================================
+# Clash Verge Rev 覆写 —「策略组(groups)」覆写，由 lazy_group.conf 转换而来
+# ============================================================================
+# 适配版本：Clash Verge Rev >= 1.6（"覆写"里可单独添加"策略组"类型的场景）。
+# 用法：订阅卡片 -> 编辑 -> 覆写 -> 新建 -> 类型选"策略组(Groups)" -> 粘贴本文件。
+#
+# 分组说明：
+#   - PROXY：总入口，相当于 Shadowrocket 首页选中的节点，默认走 👆手动选择
+#     （订阅中的全部节点），也可以切换成某个地区自动测速分组。
+#   - 👆手动选择：列出订阅中的全部节点（include-all），供你为具体服务单独
+#     指定节点；所有服务共用同一个分组，同时选中它的服务会共享同一个节点。
+#   - 香港/台湾/日本/新加坡/韩国/美国节点：用 include-all + filter 正则从
+#     订阅节点名称中自动筛选（url-test，自动选择延迟最低的节点），等价于
+#     Shadowrocket 的 policy-regex-filter，无需手工填写节点名。
+#   - AI / MissAV / YouTube / Netflix / Disney+ / Max / TikTok / Spotify /
+#     Telegram / Twitter / Facebook / PayPal / Amazon / 苹果服务 / 谷歌服务 /
+#     微软服务 / 哔哩哔哩 / 游戏平台：与原 conf 一一对应，默认策略（proxies
+#     列表第一项）与原文件 policy-select-name 保持一致。
+# ============================================================================
+
+prepend:
+  # ---------- 总入口：相当于 Shadowrocket 首页选中的节点 ----------
+  - name: PROXY
+    type: select
+    proxies:
+      - 👆手动选择
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 新加坡节点
+      - 韩国节点
+      - 美国节点
+      - DIRECT
+
+  # 手动选择：列出订阅中的全部节点，供指定服务单独选择具体节点。
+  # 所有服务共用同一个分组，避免为每个服务生成专属子分组（保持精简）；
+  # 代价是同时选中「👆手动选择」的服务会共享同一个节点。
+  # 如需排除无效/测试节点，可取消下面 filter 的注释并自定义正则，例如：
+  # filter: "^((?!(过期|官网|流量)).)*$"
+  - name: 👆手动选择
+    type: select
+    include-all: true
+
+  # ---------- 地区自动测速分组：按正则从订阅节点名称中筛选 ----------
+  - name: 香港节点
+    type: url-test
+    include-all: true
+    filter: "🇭🇰|HK|Hong|hong|香港|深港|沪港|京港|港"
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    tolerance: 0
+    timeout: 5000
+    lazy: true
+  - name: 台湾节点
+    type: url-test
+    include-all: true
+    filter: "🇹🇼|TW|TWN|Taiwan|Taipei|taiwan|台湾|台灣|台北|台中|新北|彰化"
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    tolerance: 0
+    timeout: 5000
+    lazy: true
+  - name: 日本节点
+    type: url-test
+    include-all: true
+    filter: "🇯🇵|JP|Japan|japan|Tokyo|tokyo|日本|东京|大阪|京日|苏日|沪日|上日|川日|深日|广日|日"
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    tolerance: 0
+    timeout: 5000
+    lazy: true
+  - name: 新加坡节点
+    type: url-test
+    include-all: true
+    filter: "🇸🇬|SG|Sing|sing|新加坡|狮城|沪新|京新|深新|杭新|广新"
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    tolerance: 0
+    timeout: 5000
+    lazy: true
+  - name: 韩国节点
+    type: url-test
+    include-all: true
+    filter: "🇰🇷|KR|Korea|korea|KOR|韩国|首尔|韩|韓|春川"
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    tolerance: 0
+    timeout: 5000
+    lazy: true
+  - name: 美国节点
+    type: url-test
+    include-all: true
+    filter: "🇺🇸|US|USA|America|america|United States|美国|凤凰城|洛杉矶|西雅图|芝加哥|纽约|沪美|美"
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    tolerance: 0
+    timeout: 5000
+    lazy: true
+
+  # ---------- 服务分组：默认策略（proxies 第一项）与原 conf 一致 ----------
+  - name: AI
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: MissAV
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: YouTube
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: Netflix
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: "Disney+"
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: Max
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: TikTok
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: Spotify
+    type: select
+    proxies: ["PROXY", "DIRECT", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: Telegram
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: Twitter
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: Facebook
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: PayPal
+    type: select
+    proxies: ["PROXY", "DIRECT", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: Amazon
+    type: select
+    proxies: ["PROXY", "DIRECT", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: 苹果服务
+    type: select
+    proxies: ["DIRECT", "PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: 谷歌服务
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: 微软服务
+    type: select
+    proxies: ["PROXY", "DIRECT", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: 哔哩哔哩
+    type: select
+    proxies: ["DIRECT", "PROXY", 👆手动选择, 香港节点, 台湾节点]
+  - name: 游戏平台
+    type: select
+    proxies: ["PROXY", "DIRECT", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+
+append: []
+
+delete: []

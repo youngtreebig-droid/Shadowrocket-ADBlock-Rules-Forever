@@ -1,0 +1,319 @@
+# ============================================================================
+# Clash Verge Rev 覆写 —「配置覆写(merge)」，由 lazy_group.conf 转换而来
+# ============================================================================
+# 适配版本：Clash Verge Rev >= 1.6。
+# 用法：订阅卡片 -> 编辑 -> 覆写 -> 新建 -> 类型选"配置覆写(Merge)" -> 粘贴本文件。
+#
+# 本文件只声明 rule-providers（规则集来源），必须与同批次的
+# lazy_group_clash_verge_rules.yaml（规则）和
+# lazy_group_clash_verge_groups.yaml（策略组）一起对同一个订阅启用，
+# 三者缺一都会导致规则引用的规则集或策略组缺失。
+#
+# 规则集已从 Shadowrocket 格式替换为等价的 Clash Meta(mihomo) 格式，主要来自
+# blackmatrix7/ios_rule_script 仓库的 rule/Clash/ 目录；AI 规则集默认使用与
+# 原 conf 一致的 iab0x00/ProxyRules，如遇部分 AI 服务分流异常，可参照文件
+# 末尾注释切换为 blackmatrix7 官方规则集。
+#
+# 提醒：lazy_group.conf 由本仓库 .github/workflows/release.yml 每天自动从
+# 上游重新生成并覆盖，如果上游服务分组/规则集列表变化，本三件套不会自动
+# 跟着更新，需要手工同步（这是一次性转换的静态快照）。
+# ============================================================================
+
+rule-providers:
+  # 广告过滤规则集（blackmatrix7），需放在分流规则最前面以优先拦截广告请求
+  ad-blackmatrix7:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Advertising/Advertising.yaml"
+    path: ./ruleset/lazy-group/ad-blackmatrix7.yaml
+    interval: 86400
+  # anti-AD 广告域名集，补充拦截更多广告联盟/横幅/追踪域名（仅域名级拦截）
+  ad-antiad:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://raw.githubusercontent.com/privacy-protection-tools/anti-AD/master/anti-ad-clash.yaml"
+    path: ./ruleset/lazy-group/ad-antiad.yaml
+    interval: 86400
+  # MissAV 主站、视频/图片 CDN 和推荐接口
+  missav:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/youngtreebig-droid/Shadowrocket-Rules/refs/heads/main/MissAV.list"
+    path: ./ruleset/lazy-group/missav.yaml
+    interval: 86400
+  # AI 服务规则集（与原 conf 默认启用的一致）
+  ai:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/iab0x00/ProxyRules/main/Rule/AI.txt"
+    path: ./ruleset/lazy-group/ai.yaml
+    interval: 86400
+  youtube:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.yaml"
+    path: ./ruleset/lazy-group/youtube.yaml
+    interval: 86400
+  netflix:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix.yaml"
+    path: ./ruleset/lazy-group/netflix.yaml
+    interval: 86400
+  disneyplus:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Disney/Disney.yaml"
+    path: ./ruleset/lazy-group/disneyplus.yaml
+    interval: 86400
+  hbomax:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/HBO/HBO.yaml"
+    path: ./ruleset/lazy-group/hbomax.yaml
+    interval: 86400
+  spotify:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Spotify/Spotify.yaml"
+    path: ./ruleset/lazy-group/spotify.yaml
+    interval: 86400
+  telegram:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml"
+    path: ./ruleset/lazy-group/telegram.yaml
+    interval: 86400
+  paypal:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PayPal/PayPal.yaml"
+    path: ./ruleset/lazy-group/paypal.yaml
+    interval: 86400
+  twitter:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.yaml"
+    path: ./ruleset/lazy-group/twitter.yaml
+    interval: 86400
+  facebook:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Facebook/Facebook.yaml"
+    path: ./ruleset/lazy-group/facebook.yaml
+    interval: 86400
+  amazon:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Amazon/Amazon.yaml"
+    path: ./ruleset/lazy-group/amazon.yaml
+    interval: 86400
+  sony:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Sony/Sony.yaml"
+    path: ./ruleset/lazy-group/sony.yaml
+    interval: 86400
+  nintendo:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Nintendo/Nintendo.yaml"
+    path: ./ruleset/lazy-group/nintendo.yaml
+    interval: 86400
+  epic:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Epic/Epic.yaml"
+    path: ./ruleset/lazy-group/epic.yaml
+    interval: 86400
+  steamcn:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SteamCN/SteamCN.yaml"
+    path: ./ruleset/lazy-group/steamcn.yaml
+    interval: 86400
+  steam:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Steam/Steam.yaml"
+    path: ./ruleset/lazy-group/steam.yaml
+    interval: 86400
+  game:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Game/Game.yaml"
+    path: ./ruleset/lazy-group/game.yaml
+    interval: 86400
+  github:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.yaml"
+    path: ./ruleset/lazy-group/github.yaml
+    interval: 86400
+  microsoft:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Microsoft/Microsoft.yaml"
+    path: ./ruleset/lazy-group/microsoft.yaml
+    interval: 86400
+  google:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml"
+    path: ./ruleset/lazy-group/google.yaml
+    interval: 86400
+  apple:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple.yaml"
+    path: ./ruleset/lazy-group/apple.yaml
+    interval: 86400
+  bilibili:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/BiliBili/BiliBili.yaml"
+    path: ./ruleset/lazy-group/bilibili.yaml
+    interval: 86400
+  neteasemusic:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/NetEaseMusic/NetEaseMusic.yaml"
+    path: ./ruleset/lazy-group/neteasemusic.yaml
+    interval: 86400
+  baidu:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Baidu/Baidu.yaml"
+    path: ./ruleset/lazy-group/baidu.yaml
+    interval: 86400
+  douban:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/DouBan/DouBan.yaml"
+    path: ./ruleset/lazy-group/douban.yaml
+    interval: 86400
+  wechat:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/WeChat/WeChat.yaml"
+    path: ./ruleset/lazy-group/wechat.yaml
+    interval: 86400
+  sina:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Sina/Sina.yaml"
+    path: ./ruleset/lazy-group/sina.yaml
+    interval: 86400
+  zhihu:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Zhihu/Zhihu.yaml"
+    path: ./ruleset/lazy-group/zhihu.yaml
+    interval: 86400
+  xiaohongshu:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/XiaoHongShu/XiaoHongShu.yaml"
+    path: ./ruleset/lazy-group/xiaohongshu.yaml
+    interval: 86400
+  douyin:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/DouYin/DouYin.yaml"
+    path: ./ruleset/lazy-group/douyin.yaml
+    interval: 86400
+  tiktok:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.yaml"
+    path: ./ruleset/lazy-group/tiktok.yaml
+    interval: 86400
+  global:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Global/Global.yaml"
+    path: ./ruleset/lazy-group/global.yaml
+    interval: 86400
+  china:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/China/China.yaml"
+    path: ./ruleset/lazy-group/china.yaml
+    interval: 86400
+  lan:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Lan/Lan.yaml"
+    path: ./ruleset/lazy-group/lan.yaml
+    interval: 86400
+
+  # ------------------------------------------------------------------------
+  # 可选：blackmatrix7 官方 AI 规则集（OpenAI/Gemini/Claude/Copilot）。
+  # 如遇部分 AI 服务分流异常，可取消下面 4 个规则集的注释，并在
+  # lazy_group_clash_verge_rules.yaml 中把 "RULE-SET,ai,AI" 一行删掉，
+  # 改成 4 行 "RULE-SET,<name>,AI"（openai/gemini/claude/copilot）。
+  # openai:
+  #   type: http
+  #   behavior: classical
+  #   format: yaml
+  #   url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml"
+  #   path: ./ruleset/lazy-group/openai.yaml
+  #   interval: 86400
+  # gemini:
+  #   type: http
+  #   behavior: classical
+  #   format: yaml
+  #   url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.yaml"
+  #   path: ./ruleset/lazy-group/gemini.yaml
+  #   interval: 86400
+  # claude:
+  #   type: http
+  #   behavior: classical
+  #   format: yaml
+  #   url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Claude/Claude.yaml"
+  #   path: ./ruleset/lazy-group/claude.yaml
+  #   interval: 86400
+  # copilot:
+  #   type: http
+  #   behavior: classical
+  #   format: yaml
+  #   url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Copilot/Copilot.yaml"
+  #   path: ./ruleset/lazy-group/copilot.yaml
+  #   interval: 86400

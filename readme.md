@@ -312,6 +312,21 @@ INTP | Jack of all trades | I use Arch BTW
 ![二维码](https://johnshall.github.io/Shadowrocket-ADBlock-Rules-Forever/figure/lazy_group.png)
 
 
+## 懒人配置-含策略组（Clash Verge 版）
+
+由 `lazy_group.conf` 转换而来，供 **Clash Verge Rev**（>= 1.6，已在 2.5.2 上使用真实内核验证）通过"订阅 -> 覆写"功能使用，效果与 Shadowrocket 的懒人配置-含策略组基本等价。
+
+- `lazy_group_clash_verge_groups.yaml`：策略组覆写（PROXY / 👆手动选择 / 地区节点 / 各服务分组）
+- `lazy_group_clash_verge_rules.yaml`：分流规则覆写
+- `lazy_group_clash_verge_merge.yaml`：规则集（rule-providers）覆写
+
+三个文件需对同一个订阅同时启用（分别在"编辑覆写"中选择对应类型新建并粘贴内容），缺一都会导致规则或策略组不完整，具体用法见各文件顶部注释。
+
+地区节点分组使用 `include-all` + 正则 `filter` 动态匹配订阅中的节点名称，无需手工填写节点名。规则集已从 Shadowrocket 格式替换为等价的 Clash Meta(mihomo) 格式（主要来自 [blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script) 的 `rule/Clash/` 目录）。
+
+⚠️ `lazy_group.conf` 每天由 `release.yml` 自动从上游重新生成，本三件套是一次性转换的静态快照，不会随之自动更新，如上游策略组/规则集变化需手工同步。
+
+
 ## 鸣谢
 
 - 感谢 [@h2y](https://github.com/h2y) 及所有给予 [Shadowrocket-ADBlock-Rules](https://github.com/h2y/Shadowrocket-ADBlock-Rules) 无私帮助的社区开发者们；
