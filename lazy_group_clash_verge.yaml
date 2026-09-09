@@ -1,24 +1,159 @@
 # ============================================================================
-# Clash Verge Rev 覆写 —「配置覆写(merge)」，由 lazy_group.conf 转换而来
+# Clash Verge Rev「扩展覆写配置」(Extend Config / Merge)，由 lazy_group.conf 转换而来
 # ============================================================================
-# 用法：右键机场订阅卡片 -> "编辑扩展配置"（旧版叫"扩展覆写配置"/Merge），
-# 直接是纯 YAML 文本框，粘贴本文件全部内容并保存即可（如原来已有内容，
-# 请将其与本文件合并，而不是整份覆盖）。
+# 用法：
+#   右键要应用的机场订阅卡片 -> "编辑扩展配置"（旧版界面可能显示为
+#   "扩展覆写配置"）-> 这是一个纯 YAML 文本框 -> 全选删除 -> 粘贴本文件
+#   全部内容 -> 保存。就这一步，不需要再碰"编辑规则"/"编辑代理组"。
 #
-# 本文件只声明 rule-providers（规则集来源），必须与同一订阅的
-# "编辑规则"（对应 lazy_group_clash_verge_rules.yaml）和
-# "编辑代理组"（对应 lazy_group_clash_verge_groups.yaml）一起应用，
-# 三者缺一都会导致规则引用的规则集或策略组缺失。
+# ⚠️ 重要：这会整份替换该订阅当前的 proxy-groups 和 rules。
+#   Clash Verge 的合并逻辑是：先应用该订阅"编辑规则"/"编辑代理组"里的
+#   前置/后置条目，然后才应用这里的"扩展覆写配置"；本文件下面的
+#   proxy-groups/rules 是普通字段（不是 prepend-rules 这类特殊字段，那些
+#   在当前版本里已不生效），所以会整份覆盖掉前一步的结果——包括你在
+#   "编辑规则"/"编辑代理组"里手动加过的条目，以及订阅自带的默认分组/规则。
+#   rule-providers 例外：它是按 key 合并的，不会覆盖订阅原有的规则集。
 #
-# 规则集已从 Shadowrocket 格式替换为等价的 Clash Meta(mihomo) 格式，主要来自
-# blackmatrix7/ios_rule_script 仓库的 rule/Clash/ 目录；AI 规则集默认使用与
-# 原 conf 一致的 iab0x00/ProxyRules，如遇部分 AI 服务分流异常，可参照文件
-# 末尾注释切换为 blackmatrix7 官方规则集。
-#
-# 提醒：lazy_group.conf 由本仓库 .github/workflows/release.yml 每天自动从
-# 上游重新生成并覆盖，如果上游服务分组/规则集列表变化，本三件套不会自动
-# 跟着更新，需要手工同步（这是一次性转换的静态快照）。
+#   应用前请先打开该订阅的"编辑规则"看一眼，如果有你想保留的条目
+#   （尤其是给自己代理服务器/订阅地址做直连的 IP-CIDR、DOMAIN-SUFFIX 之类
+#   的绕过规则，不保留可能导致连不上自己的订阅/面板），把这些行复制到下面
+#   rules 列表的最前面（MATCH 那条必须始终留在最后一行）再保存。
 # ============================================================================
+
+proxy-groups:
+  # ---------- 总入口：相当于 Shadowrocket 首页选中的节点 ----------
+  - name: PROXY
+    type: select
+    proxies:
+      - 👆手动选择
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 新加坡节点
+      - 韩国节点
+      - 美国节点
+      - DIRECT
+
+  # 手动选择：列出订阅中的全部节点，供指定服务单独选择具体节点。
+  # 所有服务共用同一个分组，避免为每个服务生成专属子分组（保持精简）；
+  # 代价是同时选中「👆手动选择」的服务会共享同一个节点。
+  # 如需排除无效/测试节点，可取消下面 filter 的注释并自定义正则，例如：
+  # filter: "^((?!(过期|官网|流量)).)*$"
+  - name: 👆手动选择
+    type: select
+    include-all: true
+
+  # ---------- 地区自动测速分组：按正则从订阅节点名称中筛选 ----------
+  - name: 香港节点
+    type: url-test
+    include-all: true
+    filter: "🇭🇰|HK|Hong|hong|香港|深港|沪港|京港|港"
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    tolerance: 0
+    timeout: 5000
+    lazy: true
+  - name: 台湾节点
+    type: url-test
+    include-all: true
+    filter: "🇹🇼|TW|TWN|Taiwan|Taipei|taiwan|台湾|台灣|台北|台中|新北|彰化"
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    tolerance: 0
+    timeout: 5000
+    lazy: true
+  - name: 日本节点
+    type: url-test
+    include-all: true
+    filter: "🇯🇵|JP|Japan|japan|Tokyo|tokyo|日本|东京|大阪|京日|苏日|沪日|上日|川日|深日|广日|日"
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    tolerance: 0
+    timeout: 5000
+    lazy: true
+  - name: 新加坡节点
+    type: url-test
+    include-all: true
+    filter: "🇸🇬|SG|Sing|sing|新加坡|狮城|沪新|京新|深新|杭新|广新"
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    tolerance: 0
+    timeout: 5000
+    lazy: true
+  - name: 韩国节点
+    type: url-test
+    include-all: true
+    filter: "🇰🇷|KR|Korea|korea|KOR|韩国|首尔|韩|韓|春川"
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    tolerance: 0
+    timeout: 5000
+    lazy: true
+  - name: 美国节点
+    type: url-test
+    include-all: true
+    filter: "🇺🇸|US|USA|America|america|United States|美国|凤凰城|洛杉矶|西雅图|芝加哥|纽约|沪美|美"
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    tolerance: 0
+    timeout: 5000
+    lazy: true
+
+  # ---------- 服务分组：默认策略（proxies 第一项）与原 conf 一致 ----------
+  - name: AI
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: MissAV
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: YouTube
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: Netflix
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: "Disney+"
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: Max
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: TikTok
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: Spotify
+    type: select
+    proxies: ["PROXY", "DIRECT", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: Telegram
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: Twitter
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: Facebook
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: PayPal
+    type: select
+    proxies: ["PROXY", "DIRECT", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: Amazon
+    type: select
+    proxies: ["PROXY", "DIRECT", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: 苹果服务
+    type: select
+    proxies: ["DIRECT", "PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: 谷歌服务
+    type: select
+    proxies: ["PROXY", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: 微软服务
+    type: select
+    proxies: ["PROXY", "DIRECT", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
+  - name: 哔哩哔哩
+    type: select
+    proxies: ["DIRECT", "PROXY", 👆手动选择, 香港节点, 台湾节点]
+  - name: 游戏平台
+    type: select
+    proxies: ["PROXY", "DIRECT", 👆手动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 韩国节点, 美国节点]
 
 rule-providers:
   # 广告过滤规则集（blackmatrix7），需放在分流规则最前面以优先拦截广告请求
@@ -287,9 +422,8 @@ rule-providers:
 
   # ------------------------------------------------------------------------
   # 可选：blackmatrix7 官方 AI 规则集（OpenAI/Gemini/Claude/Copilot）。
-  # 如遇部分 AI 服务分流异常，可取消下面 4 个规则集的注释，并在
-  # lazy_group_clash_verge_rules.yaml 中把 "RULE-SET,ai,AI" 一行删掉，
-  # 改成 4 行 "RULE-SET,<name>,AI"（openai/gemini/claude/copilot）。
+  # 如遇部分 AI 服务分流异常，可取消下面 4 个规则集的注释，并把下面 rules
+  # 里的 "RULE-SET,ai,AI" 一行删掉，改成 4 行 "RULE-SET,<name>,AI"。
   # openai:
   #   type: http
   #   behavior: classical
@@ -318,3 +452,63 @@ rule-providers:
   #   url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Copilot/Copilot.yaml"
   #   path: ./ruleset/lazy-group/copilot.yaml
   #   interval: 86400
+
+rules:
+  # 广告过滤规则集，需放在分流规则之前以优先拦截广告请求
+  - "RULE-SET,ad-blackmatrix7,REJECT"
+  - "RULE-SET,ad-antiad,REJECT"
+  # MissAV 主站、视频/图片 CDN 和推荐接口
+  - "RULE-SET,missav,MissAV"
+  - "DOMAIN-KEYWORD,missav,MissAV"
+  # Kiro IDE / CLI
+  - "DOMAIN-SUFFIX,kiro.dev,PROXY"
+  - "DOMAIN-SUFFIX,kiro.aws.dev,PROXY"
+  - "DOMAIN-SUFFIX,shortbread.aws.dev,PROXY"
+  - "DOMAIN-SUFFIX,q.eu-central-1.amazonaws.com,PROXY"
+  - "DOMAIN-SUFFIX,q.us-east-1.amazonaws.com,PROXY"
+  - "PROCESS-NAME,Kiro Helper (Plugin),PROXY"
+  - "PROCESS-NAME,Kiro Helper,PROXY"
+  - "PROCESS-NAME,kiro-cli-chat,PROXY"
+  - "RULE-SET,ai,AI"
+  - "RULE-SET,youtube,YouTube"
+  - "RULE-SET,netflix,Netflix"
+  - "RULE-SET,disneyplus,Disney+"
+  - "DOMAIN-SUFFIX,litix.io,Max"
+  - "DOMAIN-SUFFIX,discomax.com,Max"
+  - "DOMAIN-SUFFIX,brightline.tv,Max"
+  - "RULE-SET,hbomax,Max"
+  - "RULE-SET,spotify,Spotify"
+  - "RULE-SET,telegram,Telegram"
+  - "RULE-SET,paypal,PayPal"
+  - "RULE-SET,twitter,Twitter"
+  - "RULE-SET,facebook,Facebook"
+  - "RULE-SET,amazon,Amazon"
+  - "RULE-SET,sony,游戏平台"
+  - "RULE-SET,nintendo,游戏平台"
+  - "RULE-SET,epic,游戏平台"
+  - "RULE-SET,steamcn,游戏平台"
+  - "RULE-SET,steam,游戏平台"
+  - "RULE-SET,game,游戏平台"
+  - "RULE-SET,github,PROXY"
+  - "RULE-SET,microsoft,微软服务"
+  - "RULE-SET,google,谷歌服务"
+  - "RULE-SET,apple,苹果服务"
+  - "RULE-SET,bilibili,哔哩哔哩"
+  - "RULE-SET,neteasemusic,DIRECT"
+  - "RULE-SET,baidu,DIRECT"
+  - "RULE-SET,douban,DIRECT"
+  - "RULE-SET,wechat,DIRECT"
+  - "RULE-SET,sina,DIRECT"
+  - "RULE-SET,zhihu,DIRECT"
+  - "RULE-SET,xiaohongshu,DIRECT"
+  - "RULE-SET,douyin,DIRECT"
+  - "RULE-SET,tiktok,TikTok"
+  - "RULE-SET,global,PROXY"
+  - "RULE-SET,china,DIRECT"
+  # 本地局域网地址规则集
+  - "RULE-SET,lan,DIRECT"
+  # CN 地区 IP 走直连（GEOIP 数据库判断）
+  - "GEOIP,CN,DIRECT"
+  # 兜底策略：其余所有请求走 PROXY（必须留在最后一行）
+  - "MATCH,PROXY"
+
