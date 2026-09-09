@@ -314,13 +314,19 @@ INTP | Jack of all trades | I use Arch BTW
 
 ## 懒人配置-含策略组（Clash Verge 版）
 
-由 `lazy_group.conf` 转换而来，供 **Clash Verge Rev**（>= 1.6，已在 2.5.2 上使用真实内核验证）通过"订阅 -> 覆写"功能使用，效果与 Shadowrocket 的懒人配置-含策略组基本等价。
+由 `lazy_group.conf` 转换而来，供 **Clash Verge Rev**（已在 2.5.2 上使用真实内核验证）使用，效果与 Shadowrocket 的懒人配置-含策略组基本等价。
 
-- `lazy_group_clash_verge_groups.yaml`：策略组覆写（PROXY / 👆手动选择 / 地区节点 / 各服务分组）
-- `lazy_group_clash_verge_rules.yaml`：分流规则覆写
-- `lazy_group_clash_verge_merge.yaml`：规则集（rule-providers）覆写
+- `lazy_group_clash_verge_groups.yaml`：策略组（PROXY / 👆手动选择 / 地区节点 / 各服务分组）
+- `lazy_group_clash_verge_rules.yaml`：分流规则
+- `lazy_group_clash_verge_merge.yaml`：规则集（rule-providers）
 
-三个文件需对同一个订阅同时启用（分别在"编辑覆写"中选择对应类型新建并粘贴内容），缺一都会导致规则或策略组不完整，具体用法见各文件顶部注释。
+**用法**：这三个文件不是"新建覆写"，而是要贴进订阅自带的三个编辑入口，且需应用到同一个订阅：
+
+1. 右键该订阅卡片 -> **编辑扩展配置**（旧版叫"扩展覆写配置"）-> 直接是 YAML 文本框 -> 粘贴 `lazy_group_clash_verge_merge.yaml`。
+2. 右键该订阅卡片 -> **编辑代理组** -> 弹窗右上角点"高级"切到纯文本模式 -> 粘贴 `lazy_group_clash_verge_groups.yaml`。
+3. 右键该订阅卡片 -> **编辑规则** -> 同样点"高级" -> 粘贴 `lazy_group_clash_verge_rules.yaml`。
+
+如果该订阅在这三个入口里已有内容，请先把原有条目合并进 prepend/append，不要整份覆盖，以免丢失。三者缺一都会导致规则或策略组不完整，具体依赖关系见各文件顶部注释。
 
 地区节点分组使用 `include-all` + 正则 `filter` 动态匹配订阅中的节点名称，无需手工填写节点名。规则集已从 Shadowrocket 格式替换为等价的 Clash Meta(mihomo) 格式（主要来自 [blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script) 的 `rule/Clash/` 目录）。
 

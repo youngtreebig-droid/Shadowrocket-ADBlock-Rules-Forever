@@ -1,12 +1,13 @@
 # ============================================================================
 # Clash Verge Rev 覆写 —「配置覆写(merge)」，由 lazy_group.conf 转换而来
 # ============================================================================
-# 适配版本：Clash Verge Rev >= 1.6。
-# 用法：订阅卡片 -> 编辑 -> 覆写 -> 新建 -> 类型选"配置覆写(Merge)" -> 粘贴本文件。
+# 用法：右键机场订阅卡片 -> "编辑扩展配置"（旧版叫"扩展覆写配置"/Merge），
+# 直接是纯 YAML 文本框，粘贴本文件全部内容并保存即可（如原来已有内容，
+# 请将其与本文件合并，而不是整份覆盖）。
 #
-# 本文件只声明 rule-providers（规则集来源），必须与同批次的
-# lazy_group_clash_verge_rules.yaml（规则）和
-# lazy_group_clash_verge_groups.yaml（策略组）一起对同一个订阅启用，
+# 本文件只声明 rule-providers（规则集来源），必须与同一订阅的
+# "编辑规则"（对应 lazy_group_clash_verge_rules.yaml）和
+# "编辑代理组"（对应 lazy_group_clash_verge_groups.yaml）一起应用，
 # 三者缺一都会导致规则引用的规则集或策略组缺失。
 #
 # 规则集已从 Shadowrocket 格式替换为等价的 Clash Meta(mihomo) 格式，主要来自
