@@ -83,6 +83,10 @@ proxy-groups:
     type: select
     include-all: true
     proxies: [节点选择, DIRECT]
+  - name: Instagram
+    type: select
+    include-all: true
+    proxies: [节点选择, DIRECT]
   - name: PayPal
     type: select
     include-all: true
@@ -112,6 +116,15 @@ proxy-groups:
     include-all: true
     proxies: [节点选择, DIRECT]
 
+  # ---------- 兜底分组：没有命中任何规则的"漏网之鱼"流量走这里 ----------
+  # 规则列表最后一行 MATCH,漏网之鱼 会把所有未被前面规则命中、且不是 CN IP
+  # 的流量导到这个分组。默认跟随「节点选择」，也可单独为兜底流量选任意节点/直连。
+  # 这样兜底去向在分组面板里一目了然，不再是"看不见的默认行为"。
+  - name: 漏网之鱼
+    type: select
+    include-all: true
+    proxies: [节点选择, DIRECT]
+
 rule-providers:
   # 广告过滤规则集（blackmatrix7），需放在分流规则最前面以优先拦截广告请求
   ad-blackmatrix7:
@@ -137,13 +150,58 @@ rule-providers:
     url: "https://raw.githubusercontent.com/youngtreebig-droid/Shadowrocket-Rules/refs/heads/main/MissAV.list"
     path: ./ruleset/lazy-group/missav.yaml
     interval: 86400
-  # AI 服务规则集（与原 conf 默认启用的一致）
+  # AI 服务规则集（主力源）：覆盖 ChatGPT/Sora、Claude、Gemini/AI Studio/NotebookLM、
+  # Grok/xAI、Perplexity、OpenRouter、微软/GitHub Copilot、Apple Intelligence 等
   ai:
     type: http
     behavior: classical
     format: text
     url: "https://raw.githubusercontent.com/iab0x00/ProxyRules/main/Rule/AI.txt"
     path: ./ruleset/lazy-group/ai.yaml
+    interval: 86400
+  # ---- 以下为 blackmatrix7 官方 AI 规则集，与上面主力源互补查漏（都指向 AI 分组）----
+  ai-openai:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml"
+    path: ./ruleset/lazy-group/ai-openai.yaml
+    interval: 86400
+  ai-gemini:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.yaml"
+    path: ./ruleset/lazy-group/ai-gemini.yaml
+    interval: 86400
+  ai-claude:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Claude/Claude.yaml"
+    path: ./ruleset/lazy-group/ai-claude.yaml
+    interval: 86400
+  ai-copilot:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Copilot/Copilot.yaml"
+    path: ./ruleset/lazy-group/ai-copilot.yaml
+    interval: 86400
+  ai-bing:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Bing/Bing.yaml"
+    path: ./ruleset/lazy-group/ai-bing.yaml
+    interval: 86400
+  # Instagram 规则集（blackmatrix7）
+  instagram:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Instagram/Instagram.yaml"
+    path: ./ruleset/lazy-group/instagram.yaml
     interval: 86400
   youtube:
     type: http
@@ -427,6 +485,28 @@ rules:
   - "PROCESS-NAME,Kiro Helper,节点选择"
   - "PROCESS-NAME,kiro-cli-chat,节点选择"
   - "RULE-SET,ai,AI"
+  # blackmatrix7 官方 AI 规则集补充（与主力源互补，查漏补缺）
+  - "RULE-SET,ai-openai,AI"
+  - "RULE-SET,ai-gemini,AI"
+  - "RULE-SET,ai-claude,AI"
+  - "RULE-SET,ai-copilot,AI"
+  - "RULE-SET,ai-bing,AI"
+  # 主力源/规则集未必收录的 AI 服务，按域名补充（Cursor、Midjourney、Poe、HuggingFace 等）
+  - "DOMAIN-SUFFIX,cursor.sh,AI"
+  - "DOMAIN-SUFFIX,cursor.com,AI"
+  - "DOMAIN-SUFFIX,midjourney.com,AI"
+  - "DOMAIN-SUFFIX,poe.com,AI"
+  - "DOMAIN-SUFFIX,huggingface.co,AI"
+  - "DOMAIN-SUFFIX,hf.co,AI"
+  - "DOMAIN-SUFFIX,stability.ai,AI"
+  - "DOMAIN-SUFFIX,mistral.ai,AI"
+  - "DOMAIN-SUFFIX,groq.com,AI"
+  - "DOMAIN-SUFFIX,character.ai,AI"
+  - "DOMAIN-SUFFIX,suno.com,AI"
+  - "DOMAIN-SUFFIX,suno.ai,AI"
+  - "DOMAIN-SUFFIX,runwayml.com,AI"
+  - "DOMAIN-SUFFIX,elevenlabs.io,AI"
+  - "DOMAIN-KEYWORD,deepseek,AI"
   - "RULE-SET,youtube,YouTube"
   - "RULE-SET,netflix,Netflix"
   - "RULE-SET,disneyplus,Disney+"
@@ -439,6 +519,7 @@ rules:
   - "RULE-SET,paypal,PayPal"
   - "RULE-SET,twitter,Twitter"
   - "RULE-SET,facebook,Facebook"
+  - "RULE-SET,instagram,Instagram"
   - "RULE-SET,amazon,Amazon"
   - "RULE-SET,sony,游戏平台"
   - "RULE-SET,nintendo,游戏平台"
@@ -466,5 +547,6 @@ rules:
   - "RULE-SET,lan,DIRECT"
   # CN 地区 IP 走直连（GEOIP 数据库判断）
   - "GEOIP,CN,DIRECT"
-  # 兜底策略：其余所有请求走 节点选择（必须留在最后一行）
-  - "MATCH,节点选择"
+  # 兜底策略：所有未命中上面任何规则、且不是 CN IP 的"漏网之鱼"流量走这里
+  # （对应原 lazy_group.conf 里的 FINAL,PROXY；Clash 用 MATCH，必须留在最后一行）
+  - "MATCH,漏网之鱼"
