@@ -472,6 +472,48 @@ rules:
   # 广告过滤规则集，需放在分流规则之前以优先拦截广告请求
   - "RULE-SET,ad-blackmatrix7,REJECT"
   - "RULE-SET,ad-antiad,REJECT"
+  # ==========================================================================
+  # 微信/腾讯 直连（放在所有分流规则最前面，优先级最高，避免被 AI/global 等规则截胡）
+  # 微信短连接对延迟和 IP 稳定性极敏感，走代理极易卡住/转圈，故强制直连。
+  # 补充了 blackmatrix7 wechat 规则集未包含的登录短连接、通用腾讯域名等。
+  # ==========================================================================
+  - "RULE-SET,wechat,DIRECT"
+  # 微信核心域名
+  - "DOMAIN-SUFFIX,weixin.qq.com,DIRECT"
+  - "DOMAIN-SUFFIX,wechat.com,DIRECT"
+  - "DOMAIN-SUFFIX,weixin.com,DIRECT"
+  - "DOMAIN-SUFFIX,servicewechat.com,DIRECT"
+  - "DOMAIN-SUFFIX,servicewechat.net,DIRECT"
+  - "DOMAIN-SUFFIX,weixinbridge.com,DIRECT"
+  - "DOMAIN-SUFFIX,weixinsxy.com,DIRECT"
+  - "DOMAIN-SUFFIX,wechatos.net,DIRECT"
+  - "DOMAIN-SUFFIX,wechatlegal.net,DIRECT"
+  - "DOMAIN-SUFFIX,wechatpay.com,DIRECT"
+  # 微信登录/消息短连接（最容易卡的就是这几个，务必直连）
+  - "DOMAIN,short.weixin.qq.com,DIRECT"
+  - "DOMAIN,szshort.weixin.qq.com,DIRECT"
+  - "DOMAIN,szextshort.weixin.qq.com,DIRECT"
+  - "DOMAIN,szminorshort.weixin.qq.com,DIRECT"
+  - "DOMAIN,mp.weixin.qq.com,DIRECT"
+  - "DOMAIN,weixin110.qq.com,DIRECT"
+  - "DOMAIN-SUFFIX,wx.qq.com,DIRECT"
+  - "DOMAIN-SUFFIX,wxs.qq.com,DIRECT"
+  - "DOMAIN-SUFFIX,wxapp.tc.qq.com,DIRECT"
+  - "DOMAIN-SUFFIX,vweixinthumb.tc.qq.com,DIRECT"
+  # 微信支付
+  - "DOMAIN-SUFFIX,tenpay.com,DIRECT"
+  # 微信/QQ 图片、头像、静态资源 CDN（头像加载不出来常因这些走了代理）
+  - "DOMAIN-SUFFIX,qpic.cn,DIRECT"
+  - "DOMAIN-SUFFIX,qlogo.cn,DIRECT"
+  - "DOMAIN-SUFFIX,gtimg.com,DIRECT"
+  - "DOMAIN-SUFFIX,gtimg.cn,DIRECT"
+  - "DOMAIN-SUFFIX,idqqimg.com,DIRECT"
+  # 通用腾讯域名/腾讯云（微信很多接口托管在这些域名下）
+  - "DOMAIN-SUFFIX,qq.com,DIRECT"
+  - "DOMAIN-SUFFIX,tencent.com,DIRECT"
+  - "DOMAIN-SUFFIX,tencent-cloud.net,DIRECT"
+  - "DOMAIN-SUFFIX,myqcloud.com,DIRECT"
+  - "DOMAIN-SUFFIX,qcloud.com,DIRECT"
   # MissAV 主站、视频/图片 CDN 和推荐接口
   - "RULE-SET,missav,MissAV"
   - "DOMAIN-KEYWORD,missav,MissAV"
@@ -535,7 +577,7 @@ rules:
   - "RULE-SET,neteasemusic,DIRECT"
   - "RULE-SET,baidu,DIRECT"
   - "RULE-SET,douban,DIRECT"
-  - "RULE-SET,wechat,DIRECT"
+  # 微信规则已提前到 rules 最上方（见文件开头的微信/腾讯直连块）
   - "RULE-SET,sina,DIRECT"
   - "RULE-SET,zhihu,DIRECT"
   - "RULE-SET,xiaohongshu,DIRECT"
