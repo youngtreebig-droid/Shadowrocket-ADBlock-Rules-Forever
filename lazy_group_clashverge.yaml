@@ -514,6 +514,20 @@ rules:
   - "DOMAIN-SUFFIX,tencent-cloud.net,DIRECT"
   - "DOMAIN-SUFFIX,myqcloud.com,DIRECT"
   - "DOMAIN-SUFFIX,qcloud.com,DIRECT"
+  # 微信进程直连：微信部分流量走裸 IP（无域名），域名规则抓不到，用 PROCESS-NAME 兜底。
+  # 注意：PROCESS-NAME 主要在桌面端(Windows/macOS)生效；移动端(iOS)通常匹配不到 App 进程，
+  # 但保留无副作用（不会报错/误伤）。含微信、企业微信及关联腾讯进程。
+  - "PROCESS-NAME,WeChat,DIRECT"
+  - "PROCESS-NAME,Weixin,DIRECT"
+  - "PROCESS-NAME,微信,DIRECT"
+  - "PROCESS-NAME,TencentWeChat,DIRECT"
+  - "PROCESS-NAME,WeChatAppEx,DIRECT"
+  - "PROCESS-NAME,WeChat.exe,DIRECT"
+  - "PROCESS-NAME,Weixin.exe,DIRECT"
+  - "PROCESS-NAME,WeChatAppEx.exe,DIRECT"
+  # 企业微信
+  - "PROCESS-NAME,WXWork,DIRECT"
+  - "PROCESS-NAME,WXWork.exe,DIRECT"
   # MissAV 主站、视频/图片 CDN 和推荐接口
   - "RULE-SET,missav,MissAV"
   - "DOMAIN-KEYWORD,missav,MissAV"
