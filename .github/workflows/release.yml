@@ -57,6 +57,88 @@ jobs:
           rm lazy.conf lazy_group.conf
           curl -O https://raw.githubusercontent.com/LOWERTOP/Shadowrocket/main/lazy.conf
           curl -O https://raw.githubusercontent.com/LOWERTOP/Shadowrocket/main/lazy_group.conf
+          ad_rule_set='RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Advertising/Advertising.list,REJECT'
+          antiad_domain_set='DOMAIN-SET,https://raw.githubusercontent.com/privacy-protection-tools/anti-AD/master/anti-ad-domains.txt,REJECT'
+          missav_rule_set='RULE-SET,https://raw.githubusercontent.com/youngtreebig-droid/Shadowrocket-Rules/refs/heads/main/MissAV.list,MissAV'
+          missav_keyword_rule='DOMAIN-KEYWORD,missav,MissAV'
+          kiro_rule_marker='DOMAIN-SUFFIX,kiro.dev,PROXY'
+          awk '
+            BEGIN {
+              groups["AI"] = "AI = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
+              groups["MissAV"] = "MissAV = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
+              groups["YouTube"] = "YouTube = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
+              groups["Netflix"] = "Netflix = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
+              groups["Disney+"] = "Disney+ = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
+              groups["Max"] = "Max = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
+              groups["TikTok"] = "TikTok = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
+              groups["Spotify"] = "Spotify = select,PROXY,DIRECT,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
+              groups["Telegram"] = "Telegram = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
+              groups["Twitter"] = "Twitter = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
+              groups["Facebook"] = "Facebook = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
+              groups["PayPal"] = "PayPal = select,PROXY,DIRECT,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
+              groups["Amazon"] = "Amazon = select,PROXY,DIRECT,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
+              groups["苹果服务"] = "苹果服务 = select,DIRECT,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=DIRECT"
+              groups["谷歌服务"] = "谷歌服务 = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
+              groups["微软服务"] = "微软服务 = select,PROXY,DIRECT,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
+              groups["哔哩哔哩"] = "哔哩哔哩 = select,DIRECT,PROXY,👆手动选择,香港节点,台湾节点,policy-select-name=DIRECT"
+              groups["游戏平台"] = "游戏平台 = select,PROXY,DIRECT,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
+              manual = "👆手动选择 = select,policy-regex-filter=.*"
+            }
+            {
+              if ($0 == "[Proxy Group]") {
+                print
+                print manual
+                print groups["MissAV"]
+                next
+              }
+              separator = index($0, " = ")
+              name = separator > 0 ? substr($0, 1, separator - 1) : ""
+              if (name == "MissAV" || name == "👆手动选择") {
+                next
+              }
+              if (name in groups) {
+                print groups[name]
+                next
+              }
+              print
+            }
+          ' lazy_group.conf > lazy_group.conf.tmp
+          mv lazy_group.conf.tmp lazy_group.conf
+          if ! grep -Fqx "$ad_rule_set" lazy_group.conf; then
+            awk -v line="$ad_rule_set" '{ print } /^\[Rule\]$/ { print line }' lazy_group.conf > lazy_group.conf.tmp
+            mv lazy_group.conf.tmp lazy_group.conf
+          fi
+          if ! grep -Fqx "$antiad_domain_set" lazy_group.conf; then
+            awk -v line="$antiad_domain_set" '{ print } /^\[Rule\]$/ { print line }' lazy_group.conf > lazy_group.conf.tmp
+            mv lazy_group.conf.tmp lazy_group.conf
+          fi
+          if ! grep -Fqx "$missav_rule_set" lazy_group.conf; then
+            awk -v line="$missav_rule_set" '{ print } /^\[Rule\]$/ { print line }' lazy_group.conf > lazy_group.conf.tmp
+            mv lazy_group.conf.tmp lazy_group.conf
+          fi
+          if ! grep -Fqx "$missav_keyword_rule" lazy_group.conf; then
+            awk -v line="$missav_keyword_rule" '{ print } /^\[Rule\]$/ { print line }' lazy_group.conf > lazy_group.conf.tmp
+            mv lazy_group.conf.tmp lazy_group.conf
+          fi
+          if ! grep -Fqx "$kiro_rule_marker" lazy_group.conf; then
+            awk '
+              { print }
+              /^# AI$/ {
+                print ""
+                print "# Kiro IDE / CLI（参考 youngtreebig-droid/Shadowrocket-Rules）"
+                print "DOMAIN-SUFFIX,kiro.dev,PROXY"
+                print "DOMAIN-SUFFIX,kiro.aws.dev,PROXY"
+                print "DOMAIN-SUFFIX,shortbread.aws.dev,PROXY"
+                print "DOMAIN-SUFFIX,q.eu-central-1.amazonaws.com,PROXY"
+                print "DOMAIN-SUFFIX,q.us-east-1.amazonaws.com,PROXY"
+                print "PROCESS-NAME,Kiro Helper (Plugin),PROXY"
+                print "PROCESS-NAME,Kiro Helper,PROXY"
+                print "PROCESS-NAME,kiro-cli-chat,PROXY"
+                print ""
+              }
+            ' lazy_group.conf > lazy_group.conf.tmp
+            mv lazy_group.conf.tmp lazy_group.conf
+          fi
         
       - name: Remove commits
         run: |
