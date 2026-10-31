@@ -35,6 +35,11 @@ jobs:
           ref: release
           path: release
 
+      - uses: actions/checkout@v4
+        with:
+          ref: youngtreebig-droid-lazy-group-adblock
+          path: source
+
       - name: Install requirements
         run: pip3 install -r build/requirements.txt
 
@@ -46,64 +51,28 @@ jobs:
       - name: Move files
         run: |
           cd build || exit 1
-          cp *.conf ../release/
+          for f in *.conf; do
+            case "$f" in
+              lazy.conf|lazy_group.conf) ;;
+              *)
+                cp "$f" ../source/
+                cp "$f" ../release/
+                ;;
+            esac
+          done
+          cp -r figure ../source/
           cp -r figure ../release/
+          cp LICENSE ../source/
           cp LICENSE ../release/
-          cp readme.md ../release/
-      
+
       - name: Update lazy rules
         run: |
-          cd release || exit 1
-          rm lazy.conf lazy_group.conf
-          curl -O https://raw.githubusercontent.com/LOWERTOP/Shadowrocket/main/lazy.conf
-          curl -O https://raw.githubusercontent.com/LOWERTOP/Shadowrocket/main/lazy_group.conf
+          cd source || exit 1
           ad_rule_set='RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Advertising/Advertising.list,REJECT'
           antiad_domain_set='DOMAIN-SET,https://raw.githubusercontent.com/privacy-protection-tools/anti-AD/master/anti-ad-domains.txt,REJECT'
           missav_rule_set='RULE-SET,https://raw.githubusercontent.com/ddranic/ios-proxy-rules/master/geosite/shadowrocket/missav.list,MissAV'
           missav_keyword_rule='DOMAIN-KEYWORD,missav,MissAV'
           kiro_rule_marker='DOMAIN-SUFFIX,kiro.dev,PROXY'
-          awk '
-            BEGIN {
-              groups["AI"] = "AI = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
-              groups["MissAV"] = "MissAV = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
-              groups["YouTube"] = "YouTube = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
-              groups["Netflix"] = "Netflix = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
-              groups["Disney+"] = "Disney+ = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
-              groups["Max"] = "Max = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
-              groups["TikTok"] = "TikTok = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
-              groups["Spotify"] = "Spotify = select,PROXY,DIRECT,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
-              groups["Telegram"] = "Telegram = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
-              groups["Twitter"] = "Twitter = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
-              groups["Facebook"] = "Facebook = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
-              groups["PayPal"] = "PayPal = select,PROXY,DIRECT,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
-              groups["Amazon"] = "Amazon = select,PROXY,DIRECT,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
-              groups["苹果服务"] = "苹果服务 = select,DIRECT,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=DIRECT"
-              groups["谷歌服务"] = "谷歌服务 = select,PROXY,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
-              groups["微软服务"] = "微软服务 = select,PROXY,DIRECT,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
-              groups["哔哩哔哩"] = "哔哩哔哩 = select,DIRECT,PROXY,👆手动选择,香港节点,台湾节点,policy-select-name=DIRECT"
-              groups["游戏平台"] = "游戏平台 = select,PROXY,DIRECT,👆手动选择,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY"
-              manual = "👆手动选择 = select,policy-regex-filter=.*"
-            }
-            {
-              if ($0 == "[Proxy Group]") {
-                print
-                print manual
-                print groups["MissAV"]
-                next
-              }
-              separator = index($0, " = ")
-              name = separator > 0 ? substr($0, 1, separator - 1) : ""
-              if (name == "MissAV" || name == "👆手动选择") {
-                next
-              }
-              if (name in groups) {
-                print groups[name]
-                next
-              }
-              print
-            }
-          ' lazy_group.conf > lazy_group.conf.tmp
-          mv lazy_group.conf.tmp lazy_group.conf
           if ! grep -Fqx "$ad_rule_set" lazy_group.conf; then
             awk -v line="$ad_rule_set" '{ print } /^\[Rule\]$/ { print line }' lazy_group.conf > lazy_group.conf.tmp
             mv lazy_group.conf.tmp lazy_group.conf
@@ -139,7 +108,22 @@ jobs:
             ' lazy_group.conf > lazy_group.conf.tmp
             mv lazy_group.conf.tmp lazy_group.conf
           fi
-        
+          cp readme.md ../release/
+          cp lazy.conf lazy_group.conf ../release/
+
+      - name: Commit to default branch
+        run: |
+          cd source || exit 1
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes for default branch"
+          else
+            git commit -m "Nightly build"
+            git push origin HEAD:youngtreebig-droid-lazy-group-adblock
+          fi
+
       - name: Remove commits
         run: |
           cd release || exit 1
