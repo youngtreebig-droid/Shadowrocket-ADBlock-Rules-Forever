@@ -154,7 +154,7 @@ rule-providers:
     type: http
     behavior: classical
     format: text
-    url: "https://raw.githubusercontent.com/youngtreebig-droid/Shadowrocket-Rules/refs/heads/main/MissAV.list"
+    url: "https://raw.githubusercontent.com/ddranic/ios-proxy-rules/master/geosite/shadowrocket/missav.list"
     path: ./ruleset/lazy-group/missav.yaml
     interval: 86400
   # AI 服务规则集（主力源）：覆盖 ChatGPT/Sora、Claude、Gemini/AI Studio/NotebookLM、
