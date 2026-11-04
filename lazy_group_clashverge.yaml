@@ -43,7 +43,7 @@ proxy-groups:
     type: select
     include-all: true
     proxies: [节点选择, DIRECT]
-  - name: MissAV-TikTok
+  - name: MissAV
     type: select
     include-all: true
     proxies: [节点选择, DIRECT]
@@ -52,6 +52,10 @@ proxy-groups:
     include-all: true
     proxies: [节点选择, DIRECT]
   - name: Max
+    type: select
+    include-all: true
+    proxies: [节点选择, DIRECT]
+  - name: TikTok
     type: select
     include-all: true
     proxies: [节点选择, DIRECT]
@@ -455,8 +459,8 @@ rules:
   - "PROCESS-NAME,WXWork,DIRECT"
   - "PROCESS-NAME,WXWork.exe,DIRECT"
   # MissAV 主站、视频/图片 CDN 和推荐接口
-  - "RULE-SET,missav,MissAV-TikTok"
-  - "DOMAIN-KEYWORD,missav,MissAV-TikTok"
+  - "RULE-SET,missav,MissAV"
+  - "DOMAIN-KEYWORD,missav,MissAV"
   # Kiro IDE / CLI
   - "DOMAIN-SUFFIX,kiro.dev,AI"
   - "DOMAIN-SUFFIX,kiro.aws.dev,AI"
@@ -536,7 +540,7 @@ rules:
   - "RULE-SET,zhihu,DIRECT"
   - "RULE-SET,xiaohongshu,DIRECT"
   - "RULE-SET,douyin,DIRECT"
-  - "RULE-SET,tiktok,MissAV-TikTok"
+  - "RULE-SET,tiktok,TikTok"
   - "RULE-SET,global,节点选择"
   - "RULE-SET,china,DIRECT"
   # 本地局域网地址规则集

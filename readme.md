@@ -300,7 +300,7 @@ INTP | Jack of all trades | I use Arch BTW
 - 配置简洁
 - 规则覆盖范围广
 - 包含广告过滤
-- MissAV 与 TikTok 合并为独立分组「MissAV-TikTok」
+- MissAV、TikTok 各自独立分组
 - AI 服务（ChatGPT、Claude、Gemini、Copilot、Grok、Kiro IDE 和 CLI 等）统一归入 AI 分组
 - 各分流组可手动选择全部节点
 - 国内外常用app单独分流
