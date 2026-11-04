@@ -780,6 +780,9 @@ rules:
   - "DOMAIN-SUFFIX,llama.com,AI"
   - "DOMAIN-SUFFIX,llamameta.net,AI"
   - "DOMAIN-SUFFIX,metaaiusercontent.com,AI"
+  - "DOMAIN-SUFFIX,muse.ai,AI"
+  - "DOMAIN-SUFFIX,metaaivm.com,AI"
+  - "DOMAIN-SUFFIX,hark.com,AI"
   # 模型 API 聚合与推理平台
   - "DOMAIN-SUFFIX,together.ai,AI"
   - "DOMAIN-SUFFIX,together.xyz,AI"
