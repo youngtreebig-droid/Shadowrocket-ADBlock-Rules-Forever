@@ -305,7 +305,7 @@ INTP | Jack of all trades | I use Arch BTW
 - 各分流组可手动选择全部节点
 - 国内外常用app单独分流
 - 添加自动切换延迟最低节点类型
-- 流媒体（YouTube、Netflix、Disney+）合并为「流媒体」分组，可通过「代理分组」灵活调整分流策略
+- 流媒体（YouTube、Netflix、Disney+、Max）合并为「流媒体」分组，可通过「代理分组」灵活调整分流策略
 
 规则地址：<https://johnshall.github.io/Shadowrocket-ADBlock-Rules-Forever/lazy_group.conf>
 

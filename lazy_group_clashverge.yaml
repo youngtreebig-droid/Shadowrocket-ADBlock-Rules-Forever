@@ -51,10 +51,6 @@ proxy-groups:
     type: select
     include-all: true
     proxies: [节点选择, DIRECT]
-  - name: Max
-    type: select
-    include-all: true
-    proxies: [节点选择, DIRECT]
   - name: TikTok
     type: select
     include-all: true
@@ -515,10 +511,10 @@ rules:
   - "RULE-SET,youtube,流媒体"
   - "RULE-SET,netflix,流媒体"
   - "RULE-SET,disneyplus,流媒体"
-  - "DOMAIN-SUFFIX,litix.io,Max"
-  - "DOMAIN-SUFFIX,discomax.com,Max"
-  - "DOMAIN-SUFFIX,brightline.tv,Max"
-  - "RULE-SET,hbomax,Max"
+  - "DOMAIN-SUFFIX,litix.io,流媒体"
+  - "DOMAIN-SUFFIX,discomax.com,流媒体"
+  - "DOMAIN-SUFFIX,brightline.tv,流媒体"
+  - "RULE-SET,hbomax,流媒体"
   - "RULE-SET,sony,游戏平台"
   - "RULE-SET,nintendo,游戏平台"
   - "RULE-SET,epic,游戏平台"
