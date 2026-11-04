@@ -70,14 +70,10 @@ proxy-groups:
     type: select
     include-all: true
     proxies: [节点选择, DIRECT]
-  - name: 哔哩哔哩
-    type: select
-    include-all: true
-    proxies: [DIRECT, 节点选择]
   - name: 游戏平台
     type: select
     include-all: true
-    proxies: [节点选择, DIRECT]
+    proxies: [DIRECT, 节点选择]
 
   # ---------- 兜底分组：没有命中任何规则的"漏网之鱼"流量走这里 ----------
   # 规则列表最后一行 MATCH,漏网之鱼 会把所有未被前面规则命中、且不是 CN IP
@@ -348,6 +344,224 @@ rule-providers:
     format: yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/China/China.yaml"
     path: ./ruleset/lazy-group/china.yaml
+    interval: 86400
+  # 国内直连补充：v2fly cn 分类、国内媒体、国内常用应用/厂商/银行/运营商、国内 IP 段
+  cn-domain:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ddranic/ios-proxy-rules/master/geosite/shadowrocket/cn.list"
+    path: ./ruleset/lazy-group/cn-domain.yaml
+    interval: 86400
+  chinamedia:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaMedia/ChinaMedia.yaml"
+    path: ./ruleset/lazy-group/chinamedia.yaml
+    interval: 86400
+  xiaomi:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/XiaoMi/XiaoMi.yaml"
+    path: ./ruleset/lazy-group/xiaomi.yaml
+    interval: 86400
+  huawei:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Huawei/Huawei.yaml"
+    path: ./ruleset/lazy-group/huawei.yaml
+    interval: 86400
+  oppo:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OPPO/OPPO.yaml"
+    path: ./ruleset/lazy-group/oppo.yaml
+    interval: 86400
+  vivo:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Vivo/Vivo.yaml"
+    path: ./ruleset/lazy-group/vivo.yaml
+    interval: 86400
+  kuaishou:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/KuaiShou/KuaiShou.yaml"
+    path: ./ruleset/lazy-group/kuaishou.yaml
+    interval: 86400
+  jingdong:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/JingDong/JingDong.yaml"
+    path: ./ruleset/lazy-group/jingdong.yaml
+    interval: 86400
+  netease:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/NetEase/NetEase.yaml"
+    path: ./ruleset/lazy-group/netease.yaml
+    interval: 86400
+  kugoukuwo:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/KugouKuwo/KugouKuwo.yaml"
+    path: ./ruleset/lazy-group/kugoukuwo.yaml
+    interval: 86400
+  didi:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/DiDi/DiDi.yaml"
+    path: ./ruleset/lazy-group/didi.yaml
+    interval: 86400
+  xianyu:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/XianYu/XianYu.yaml"
+    path: ./ruleset/lazy-group/xianyu.yaml
+    interval: 86400
+  qihoo360:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/360/360.yaml"
+    path: ./ruleset/lazy-group/qihoo360.yaml
+    interval: 86400
+  kingsoft:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Kingsoft/Kingsoft.yaml"
+    path: ./ruleset/lazy-group/kingsoft.yaml
+    interval: 86400
+  iflytek:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/iFlytek/iFlytek.yaml"
+    path: ./ruleset/lazy-group/iflytek.yaml
+    interval: 86400
+  qiniuyun:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/QiNiuYun/QiNiuYun.yaml"
+    path: ./ruleset/lazy-group/qiniuyun.yaml
+    interval: 86400
+  uc:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/UC/UC.yaml"
+    path: ./ruleset/lazy-group/uc.yaml
+    interval: 86400
+  xunlei:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Xunlei/Xunlei.yaml"
+    path: ./ruleset/lazy-group/xunlei.yaml
+    interval: 86400
+  rail12306:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/12306/12306.yaml"
+    path: ./ruleset/lazy-group/rail12306.yaml
+    interval: 86400
+  alipay:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AliPay/AliPay.yaml"
+    path: ./ruleset/lazy-group/alipay.yaml
+    interval: 86400
+  unionpay:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/UnionPay/UnionPay.yaml"
+    path: ./ruleset/lazy-group/unionpay.yaml
+    interval: 86400
+  icbc:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ICBC/ICBC.yaml"
+    path: ./ruleset/lazy-group/icbc.yaml
+    interval: 86400
+  cmb:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/CMB/CMB.yaml"
+    path: ./ruleset/lazy-group/cmb.yaml
+    interval: 86400
+  boc:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/BOC/BOC.yaml"
+    path: ./ruleset/lazy-group/boc.yaml
+    interval: 86400
+  ccb:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/CCB/CCB.yaml"
+    path: ./ruleset/lazy-group/ccb.yaml
+    interval: 86400
+  pingan:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PingAn/PingAn.yaml"
+    path: ./ruleset/lazy-group/pingan.yaml
+    interval: 86400
+  eastmoney:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/EastMoney/EastMoney.yaml"
+    path: ./ruleset/lazy-group/eastmoney.yaml
+    interval: 86400
+  chinamobile:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaMobile/ChinaMobile.yaml"
+    path: ./ruleset/lazy-group/chinamobile.yaml
+    interval: 86400
+  chinatelecom:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaTelecom/ChinaTelecom.yaml"
+    path: ./ruleset/lazy-group/chinatelecom.yaml
+    interval: 86400
+  chinaunicom:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaUnicom/ChinaUnicom.yaml"
+    path: ./ruleset/lazy-group/chinaunicom.yaml
+    interval: 86400
+  cncidr:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt"
+    path: ./ruleset/lazy-group/cncidr.yaml
     interval: 86400
   lan:
     type: http
@@ -731,7 +945,7 @@ rules:
   # Apple Intelligence 必须放在 apple 规则集之前，否则会被苹果服务(直连)截胡导致功能不可用
   - "RULE-SET,apple-intelligence,Apple智能"
   - "RULE-SET,apple,苹果服务"
-  - "RULE-SET,bilibili,哔哩哔哩"
+  - "RULE-SET,bilibili,DIRECT"
   - "RULE-SET,neteasemusic,DIRECT"
   - "RULE-SET,baidu,DIRECT"
   - "RULE-SET,douban,DIRECT"
@@ -743,6 +957,38 @@ rules:
   - "RULE-SET,tiktok,TikTok"
   - "RULE-SET,global,节点选择"
   - "RULE-SET,china,DIRECT"
+  # 国内直连补充（放在 global 之后，避免覆盖需要代理的境外服务）
+  - "RULE-SET,cn-domain,DIRECT"
+  - "RULE-SET,chinamedia,DIRECT"
+  - "RULE-SET,xiaomi,DIRECT"
+  - "RULE-SET,huawei,DIRECT"
+  - "RULE-SET,oppo,DIRECT"
+  - "RULE-SET,vivo,DIRECT"
+  - "RULE-SET,kuaishou,DIRECT"
+  - "RULE-SET,jingdong,DIRECT"
+  - "RULE-SET,netease,DIRECT"
+  - "RULE-SET,kugoukuwo,DIRECT"
+  - "RULE-SET,didi,DIRECT"
+  - "RULE-SET,xianyu,DIRECT"
+  - "RULE-SET,qihoo360,DIRECT"
+  - "RULE-SET,kingsoft,DIRECT"
+  - "RULE-SET,iflytek,DIRECT"
+  - "RULE-SET,qiniuyun,DIRECT"
+  - "RULE-SET,uc,DIRECT"
+  - "RULE-SET,xunlei,DIRECT"
+  - "RULE-SET,rail12306,DIRECT"
+  - "RULE-SET,alipay,DIRECT"
+  - "RULE-SET,unionpay,DIRECT"
+  - "RULE-SET,icbc,DIRECT"
+  - "RULE-SET,cmb,DIRECT"
+  - "RULE-SET,boc,DIRECT"
+  - "RULE-SET,ccb,DIRECT"
+  - "RULE-SET,pingan,DIRECT"
+  - "RULE-SET,eastmoney,DIRECT"
+  - "RULE-SET,chinamobile,DIRECT"
+  - "RULE-SET,chinatelecom,DIRECT"
+  - "RULE-SET,chinaunicom,DIRECT"
+  - "RULE-SET,cncidr,DIRECT,no-resolve"
   # 本地局域网地址规则集
   - "RULE-SET,lan,DIRECT"
   # CN 地区 IP 走直连（GEOIP 数据库判断）
