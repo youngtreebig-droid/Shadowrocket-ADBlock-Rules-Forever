@@ -300,12 +300,13 @@ INTP | Jack of all trades | I use Arch BTW
 - 配置简洁
 - 规则覆盖范围广
 - 包含广告过滤
-- MissAV 网站单独分流
-- Kiro IDE 和 CLI 单独走代理
+- MissAV、TikTok 各自独立分组
+- AI 服务（ChatGPT、Claude、Gemini、Grok、Kiro IDE 和 CLI、GitHub Copilot、Windsurf、JetBrains AI、Cursor、Cline 等 AI 编程工具，以及各类模型 API/推理平台）统一归入 AI 分组
+- 微软全家桶（Microsoft 365、Microsoft Copilot、Azure OpenAI、Bing 等）也归入 AI 分组，确保其内置的 GPT/Claude 模型可用；原「微软服务」分组已取消
 - 各分流组可手动选择全部节点
 - 国内外常用app单独分流
 - 添加自动切换延迟最低节点类型
-- 通过「代理分组」灵活调整流媒体分流策略
+- 流媒体（YouTube、Netflix、Disney+、Max）合并为「流媒体」分组，可通过「代理分组」灵活调整分流策略
 
 规则地址：<https://johnshall.github.io/Shadowrocket-ADBlock-Rules-Forever/lazy_group.conf>
 
