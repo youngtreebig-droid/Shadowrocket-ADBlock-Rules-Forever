@@ -783,6 +783,13 @@ rules:
   - "DOMAIN-SUFFIX,muse.ai,AI"
   - "DOMAIN-SUFFIX,metaaivm.com,AI"
   - "DOMAIN-SUFFIX,hark.com,AI"
+  - "DOMAIN-SUFFIX,museai.com,AI"
+  - "DOMAIN-SUFFIX,ecto1.ai,AI"
+  - "DOMAIN-SUFFIX,auth.meta.com,AI"
+  - "DOMAIN,ep7.facebook.com,AI"
+  - "DOMAIN,connect.facebook.net,AI"
+  - "DOMAIN,meta-ohttp-config-prod.fastly-edge.com,AI"
+  - "DOMAIN,meta-ohttp-relay-prod.fastly-edge.com,AI"
   # 模型 API 聚合与推理平台
   - "DOMAIN-SUFFIX,together.ai,AI"
   - "DOMAIN-SUFFIX,together.xyz,AI"
