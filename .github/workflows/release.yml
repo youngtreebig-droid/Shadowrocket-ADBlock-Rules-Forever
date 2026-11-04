@@ -72,7 +72,6 @@ jobs:
           antiad_domain_set='DOMAIN-SET,https://raw.githubusercontent.com/privacy-protection-tools/anti-AD/master/anti-ad-domains.txt,REJECT'
           missav_rule_set='RULE-SET,https://raw.githubusercontent.com/ddranic/ios-proxy-rules/master/geosite/shadowrocket/missav.list,MissAV'
           missav_keyword_rule='DOMAIN-KEYWORD,missav,MissAV'
-          kiro_rule_marker='DOMAIN-SUFFIX,kiro.dev,PROXY'
           if ! grep -Fqx "$ad_rule_set" lazy_group.conf; then
             awk -v line="$ad_rule_set" '{ print } /^\[Rule\]$/ { print line }' lazy_group.conf > lazy_group.conf.tmp
             mv lazy_group.conf.tmp lazy_group.conf
@@ -87,25 +86,6 @@ jobs:
           fi
           if ! grep -Fqx "$missav_keyword_rule" lazy_group.conf; then
             awk -v line="$missav_keyword_rule" '{ print } /^\[Rule\]$/ { print line }' lazy_group.conf > lazy_group.conf.tmp
-            mv lazy_group.conf.tmp lazy_group.conf
-          fi
-          if ! grep -Fqx "$kiro_rule_marker" lazy_group.conf; then
-            awk '
-              { print }
-              /^# AI$/ {
-                print ""
-                print "# Kiro IDE / CLI（参考 youngtreebig-droid/Shadowrocket-Rules）"
-                print "DOMAIN-SUFFIX,kiro.dev,PROXY"
-                print "DOMAIN-SUFFIX,kiro.aws.dev,PROXY"
-                print "DOMAIN-SUFFIX,shortbread.aws.dev,PROXY"
-                print "DOMAIN-SUFFIX,q.eu-central-1.amazonaws.com,PROXY"
-                print "DOMAIN-SUFFIX,q.us-east-1.amazonaws.com,PROXY"
-                print "PROCESS-NAME,Kiro Helper (Plugin),PROXY"
-                print "PROCESS-NAME,Kiro Helper,PROXY"
-                print "PROCESS-NAME,kiro-cli-chat,PROXY"
-                print ""
-              }
-            ' lazy_group.conf > lazy_group.conf.tmp
             mv lazy_group.conf.tmp lazy_group.conf
           fi
           cp readme.md ../release/
