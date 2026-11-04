@@ -70,8 +70,8 @@ jobs:
           cd source || exit 1
           ad_rule_set='RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Advertising/Advertising.list,REJECT'
           antiad_domain_set='DOMAIN-SET,https://raw.githubusercontent.com/privacy-protection-tools/anti-AD/master/anti-ad-domains.txt,REJECT'
-          missav_rule_set='RULE-SET,https://raw.githubusercontent.com/ddranic/ios-proxy-rules/master/geosite/shadowrocket/missav.list,MissAV'
-          missav_keyword_rule='DOMAIN-KEYWORD,missav,MissAV'
+          missav_rule_set='RULE-SET,https://raw.githubusercontent.com/ddranic/ios-proxy-rules/master/geosite/shadowrocket/missav.list,MissAV-TikTok'
+          missav_keyword_rule='DOMAIN-KEYWORD,missav,MissAV-TikTok'
           if ! grep -Fqx "$ad_rule_set" lazy_group.conf; then
             awk -v line="$ad_rule_set" '{ print } /^\[Rule\]$/ { print line }' lazy_group.conf > lazy_group.conf.tmp
             mv lazy_group.conf.tmp lazy_group.conf
